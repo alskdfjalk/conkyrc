@@ -15,7 +15,7 @@ require 'cairo'
 clock_h = {
     {
     name='time',                   arg='%H',                    max_value=12,
-    x=200,                         y=95,
+    x=500,                         y=140,
     graph_radius=93,
     graph_thickness=5,
     graph_unit_angle=30,           graph_unit_thickness=30,
@@ -27,18 +27,18 @@ clock_h = {
     graduation_radius=63,
     graduation_thickness=6,        graduation_mark_thickness=2,
     graduation_unit_angle=30,
-    graduation_fg_colour=0xFFFFFF, graduation_fg_alpha=0.3,
+    graduation_fg_colour=0xFFFFFF, graduation_fg_alpha=0.6,
     },
 }
 -- MINUTES
 clock_m = {
     {
     name='time',                   arg='%M',                    max_value=60,
-    x=200,                         y=95,
+    x=500,                         y=140,
     graph_radius=80,
     graph_thickness=9,
     graph_unit_angle=6,            graph_unit_thickness=6,
-    graph_bg_colour=0xffffff,      graph_bg_alpha=0.5,
+    graph_bg_colour=0xffffff,      graph_bg_alpha=0.3,
     graph_fg_colour=0x92F1BD,      graph_fg_alpha=0.7,
     txt_radius=48,
     txt_weight=0,                  txt_size=20.0,
@@ -53,12 +53,12 @@ clock_m = {
 clock_s = {
     {
     name='time',                   arg='%S',                    max_value=60,
-    x=200,                         y=95,
+    x=500,                         y=140,
     graph_radius=70,
     graph_thickness=2,
     graph_unit_angle=6,            graph_unit_thickness=2,
-    graph_bg_colour=0xffffff,      graph_bg_alpha=0.2,
-    graph_fg_colour=0x92F1E3,      graph_fg_alpha=0.9,
+    graph_bg_colour=0xffffff,      graph_bg_alpha=0.4,
+    graph_fg_colour=0x92F1E3,      graph_fg_alpha=1.0,
     txt_radius=58,
     txt_weight=0,                  txt_size=20.0,
     txt_fg_colour=0xD7EFD7,        txt_fg_alpha=0.6,
@@ -74,7 +74,7 @@ clock_s = {
 gauge = {
 {
     name='cpu',                    arg='cpu0',                  max_value=100,
-    x=85,                          y=210,
+    x=385,                          y=235,
     graph_radius=34,
     graph_thickness=5,
     graph_start_angle=180,
@@ -95,7 +95,7 @@ gauge = {
 },
 {
     name='memperc',                arg='',                      max_value=100,
-    x=85,                          y=350,
+    x=385,                          y=365,
     graph_radius=34,
     graph_thickness=5,
     graph_start_angle=180,
@@ -115,8 +115,8 @@ gauge = {
     caption_fg_colour=0xFFFFFF,    caption_fg_alpha=0.3,
 },
 {
-    name='fs_used_perc',           arg='/',                     max_value=100,
-    x=85,                          y=480,
+    name='fs_used_perc',           arg='/',                     max_value=1022976,
+    x=385,                          y=490,
     graph_radius=34,
     graph_thickness=5,
     graph_start_angle=180,
@@ -136,8 +136,8 @@ gauge = {
     caption_fg_colour=0xFFFFFF,    caption_fg_alpha=0.5,
 },
 {
-    name='fs_used_perc',           arg='/home/',                max_value=100,
-    x=85,                          y=480,
+    name='fs_used_perc',           arg='/home',                max_value=1022976,
+    x=385,                          y=490,
     graph_radius=28,
     graph_thickness=5,
     graph_start_angle=180,
@@ -198,10 +198,10 @@ function draw_clock_ring(display, data, value)
     local val = (value % max_value)
     local i = 1
     while i <= val do
-        cairo_arc(display, x, y, graph_radius,(  ((graph_unit_angle * i) - graph_unit_thickness)*(2*math.pi/360)  )-(math.pi/2),((graph_unit_angle * i) * (2*math.pi/360))-(math.pi/2))
-        cairo_set_source_rgba(display,rgb_to_r_g_b(graph_fg_colour,graph_fg_alpha))
-        cairo_stroke(display)
-        i = i + 1
+	cairo_arc(display, x, y, graph_radius,(  ((graph_unit_angle * i) - graph_unit_thickness)*(2*math.pi/360)  )-(math.pi/2),((graph_unit_angle * i) * (2*math.pi/360))-(math.pi/2))
+	cairo_set_source_rgba(display,rgb_to_r_g_b(graph_fg_colour,graph_fg_alpha))
+	cairo_stroke(display)
+	i = i + 1
     end
     local angle = (graph_unit_angle * i) - graph_unit_thickness
 
@@ -211,16 +211,16 @@ function draw_clock_ring(display, data, value)
     local graduation_unit_angle = data['graduation_unit_angle']
     local graduation_fg_colour, graduation_fg_alpha = data['graduation_fg_colour'], data['graduation_fg_alpha']
     if graduation_radius > 0 and graduation_thickness > 0 and graduation_unit_angle > 0 then
-        local nb_graduation = 360 / graduation_unit_angle
-        local i = 1
-        while i <= nb_graduation do
-            cairo_set_line_width(display, graduation_thickness)
-            cairo_arc(display, x, y, graduation_radius, (((graduation_unit_angle * i)-(graduation_mark_thickness/2))*(2*math.pi/360))-(math.pi/2),(((graduation_unit_angle * i)+(graduation_mark_thickness/2))*(2*math.pi/360))-(math.pi/2))
-            cairo_set_source_rgba(display,rgb_to_r_g_b(graduation_fg_colour,graduation_fg_alpha))
-            cairo_stroke(display)
-            cairo_set_line_width(display, graph_thickness)
-            i = i + 1
-        end
+	local nb_graduation = 360 / graduation_unit_angle
+	local i = 1
+	while i <= nb_graduation do
+	    cairo_set_line_width(display, graduation_thickness)
+	    cairo_arc(display, x, y, graduation_radius, (((graduation_unit_angle * i)-(graduation_mark_thickness/2))*(2*math.pi/360))-(math.pi/2),(((graduation_unit_angle * i)+(graduation_mark_thickness/2))*(2*math.pi/360))-(math.pi/2))
+	    cairo_set_source_rgba(display,rgb_to_r_g_b(graduation_fg_colour,graduation_fg_alpha))
+	    cairo_stroke(display)
+	    cairo_set_line_width(display, graph_thickness)
+	    i = i + 1
+	end
     end
 
     -- text
@@ -265,12 +265,12 @@ function draw_gauge_ring(display, data, value)
     local stop_arc = 0
     local i = 1
     while i <= val do
-        start_arc = (graph_unit_angle * i) - graph_unit_thickness
-        stop_arc = (graph_unit_angle * i)
-        cairo_arc(display, x, y, graph_radius, angle_to_position(graph_start_angle, start_arc), angle_to_position(graph_start_angle, stop_arc))
-        cairo_set_source_rgba(display, rgb_to_r_g_b(graph_fg_colour, graph_fg_alpha))
-        cairo_stroke(display)
-        i = i + 1
+	start_arc = (graph_unit_angle * i) - graph_unit_thickness
+	stop_arc = (graph_unit_angle * i)
+	cairo_arc(display, x, y, graph_radius, angle_to_position(graph_start_angle, start_arc), angle_to_position(graph_start_angle, stop_arc))
+	cairo_set_source_rgba(display, rgb_to_r_g_b(graph_fg_colour, graph_fg_alpha))
+	cairo_stroke(display)
+	i = i + 1
     end
     local angle = start_arc
 
@@ -287,18 +287,18 @@ function draw_gauge_ring(display, data, value)
     local graduation_unit_angle = data['graduation_unit_angle']
     local graduation_fg_colour, graduation_fg_alpha = data['graduation_fg_colour'], data['graduation_fg_alpha']
     if graduation_radius > 0 and graduation_thickness > 0 and graduation_unit_angle > 0 then
-        local nb_graduation = graph_end_angle / graduation_unit_angle
-        local i = 0
-        while i < nb_graduation do
-            cairo_set_line_width(display, graduation_thickness)
-            start_arc = (graduation_unit_angle * i) - (graduation_mark_thickness / 2)
-            stop_arc = (graduation_unit_angle * i) + (graduation_mark_thickness / 2)
-            cairo_arc(display, x, y, graduation_radius, angle_to_position(graph_start_angle, start_arc), angle_to_position(graph_start_angle, stop_arc))
-            cairo_set_source_rgba(display,rgb_to_r_g_b(graduation_fg_colour,graduation_fg_alpha))
-            cairo_stroke(display)
-            cairo_set_line_width(display, graph_thickness)
-            i = i + 1
-        end
+	local nb_graduation = graph_end_angle / graduation_unit_angle
+	local i = 0
+	while i < nb_graduation do
+	    cairo_set_line_width(display, graduation_thickness)
+	    start_arc = (graduation_unit_angle * i) - (graduation_mark_thickness / 2)
+	    stop_arc = (graduation_unit_angle * i) + (graduation_mark_thickness / 2)
+	    cairo_arc(display, x, y, graduation_radius, angle_to_position(graph_start_angle, start_arc), angle_to_position(graph_start_angle, stop_arc))
+	    cairo_set_source_rgba(display,rgb_to_r_g_b(graduation_fg_colour,graduation_fg_alpha))
+	    cairo_stroke(display)
+	    cairo_set_line_width(display, graph_thickness)
+	    i = i + 1
+	end
     end
 
     -- text
@@ -326,7 +326,7 @@ function draw_gauge_ring(display, data, value)
     cairo_move_to (display, x + tox + 5, y + toy + 1)
     -- bad hack but not enough time !
     if graph_start_angle < 105 then
-        cairo_move_to (display, x + tox - 30, y + toy + 1)
+	cairo_move_to (display, x + tox - 30, y + toy + 1)
     end
     cairo_show_text (display, caption)
     cairo_stroke (display)
@@ -338,21 +338,21 @@ end
 --
 function go_clock_rings(display)
     local function load_clock_rings(display, data)
-        local str, value = '', 0
-        str = string.format('${%s %s}',data['name'], data['arg'])
-        str = conky_parse(str)
-        value = tonumber(str)
-        draw_clock_ring(display, data, value)
+	local str, value = '', 0
+	str = string.format('${%s %s}',data['name'], data['arg'])
+	str = conky_parse(str)
+	value = tonumber(str)
+	draw_clock_ring(display, data, value)
     end
-    
+
     for i in pairs(clock_h) do
-        load_clock_rings(display, clock_h[i])
+	load_clock_rings(display, clock_h[i])
     end
     for i in pairs(clock_m) do
-        load_clock_rings(display, clock_m[i])
+	load_clock_rings(display, clock_m[i])
     end
     for i in pairs(clock_s) do
-        load_clock_rings(display, clock_s[i])
+	load_clock_rings(display, clock_s[i])
     end
 end
 
@@ -362,37 +362,43 @@ end
 --
 function go_gauge_rings(display)
     local function load_gauge_rings(display, data)
-        local str, value = '', 0
-        str = string.format('${%s %s}',data['name'], data['arg'])
-        str = conky_parse(str)
-        value = tonumber(str)
-        draw_gauge_ring(display, data, value)
+	local str, value = '', 0
+	str = string.format('${%s %s}',data['name'], data['arg'])
+	str = conky_parse(str)
+	if string.match(str,"MiB") then
+	    str = string.sub(str, 0, string.len(str)-3) * 1024
+	elseif string.match(str,"GiB") then
+	    str = string.sub(str, 0, string.len(str)-3) * 1024 * 1024
+        elseif string.match(str, "KiB") or string.match(str, "B") then
+	    str = string.sub(str, 0, string.len(str)-3)
+	end
+	value = tonumber(str)
+	draw_gauge_ring(display, data, value)
     end
-    
+
     for i in pairs(gauge) do
-        load_gauge_rings(display, gauge[i])
+	load_gauge_rings(display, gauge[i])
     end
 end
 
 -------------------------------------------------------------------------------
 --                                                                         MAIN
 function conky_main()
-    if conky_window == nil then 
-        return
+    if conky_window == nil then
+	return
     end
 
     local cs = cairo_xlib_surface_create(conky_window.display, conky_window.drawable, conky_window.visual, conky_window.width, conky_window.height)
     local display = cairo_create(cs)
-    
+
     local updates = conky_parse('${updates}')
     update_num = tonumber(updates)
-    
+
     if update_num > 5 then
-        go_clock_rings(display)
-        go_gauge_rings(display)
+	go_clock_rings(display)
+	go_gauge_rings(display)
     end
-    
+
     cairo_surface_destroy(cs)
     cairo_destroy(display)
 end
-

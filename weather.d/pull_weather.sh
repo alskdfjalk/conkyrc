@@ -38,7 +38,7 @@ showhelp()
 	echo "                      -x             图片显示的位置：x"
 	echo "                      -y             图片显示的位置：y"
 	echo "                      -t             选择要获取的天气数据"
-	echo "                            update_time|shidu|pm25|pm10|quality|wendu|ganmao|low|high|sunrise|sunset|fx|fl|type|ymd"
+	echo "                      city|province|update_time|shidu|pm25|pm10|quality|wendu|ganmao|low|high|sunrise|sunset|fx|fl|type|ymd"
 	echo "example:"
 	exit
 }
@@ -125,13 +125,16 @@ weather_format_variables(){
 	if [ "update_time" == "${weathertype}" ]
 	then
 		weathertype="updateTime"
+	elif [ "province" == ${weathertype} ]
+	then
+		weathertype=parent
 	fi
 
 	case ${weathertype} in
 		ganmao|wendu|shidu|pm25|pm10|quality)
 			echo ${weather_data} | jq ".data.${weathertype}"
 			;;
-		updateTime)
+		updateTime|city|parent)
 			echo ${weather_data} | jq ".cityInfo.${weathertype}"
 			;;
 		yesterday)
@@ -172,7 +175,8 @@ main(){
 	if [ "${update}" == true ]
 	then
 		init_where_am_I
-		query_weather > ${weatherlog}
+		query_weather > /tmp/query_weather.log
+		cat /tmp/query_weather.log > ${weatherlog}
 	elif [ -n "${imgpath}" ]
 	then
 		[ type != ${weathertype} ] && showhelp

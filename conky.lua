@@ -22,8 +22,8 @@ clock_h = {
     graph_bg_colour=0xffffff,      graph_bg_alpha=0.0,
     graph_fg_colour=0x40BF46,      graph_fg_alpha=1.0,
     txt_radius=48,
-    txt_weight=1,                  txt_size=25.0,
-    txt_fg_colour=0xFFFFFF,        txt_fg_alpha=1.0,
+    txt_weight=1,                  txt_size=22.0,
+    txt_fg_colour=0x09FFF0,        txt_fg_alpha=1.0,
     graduation_radius=63,
     graduation_thickness=6,        graduation_mark_thickness=2,
     graduation_unit_angle=30,
@@ -36,17 +36,19 @@ clock_m = {
     name='time',                   arg='%M',                    max_value=60,
     x=500,                         y=140,
     graph_radius=80,
-    graph_thickness=9,
+    graph_thickness=8,
     graph_unit_angle=6,            graph_unit_thickness=6,
     graph_bg_colour=0xffffff,      graph_bg_alpha=0.3,
     graph_fg_colour=0x92F1BD,      graph_fg_alpha=0.5,
-    txt_radius=48,
-    txt_weight=0,                  txt_size=20.0,
-    txt_fg_colour=0xFFFFFF,        txt_fg_alpha=0.8,
+    txt_radius=47,
+    txt_weight=0,                  txt_size=19.0,
+    txt_fg_colour=0x09FFF0,        txt_fg_alpha=0.8,
     graduation_radius=57,
     graduation_thickness=0,        graduation_mark_thickness=2,
     graduation_unit_angle=30,
     graduation_fg_colour=0xFFFFFF, graduation_fg_alpha=0.3,
+    start_angle=0,                 end_angle=360,
+    thickness=6,
     },
 }
 -- SECONDS
@@ -59,9 +61,9 @@ clock_s = {
     graph_unit_angle=6,            graph_unit_thickness=2,
     graph_bg_colour=0xffffff,      graph_bg_alpha=0.4,
     graph_fg_colour=0x92F1E3,      graph_fg_alpha=1.0,
-    txt_radius=58,
-    txt_weight=0,                  txt_size=20.0,
-    txt_fg_colour=0xD7EFD7,        txt_fg_alpha=0.6,
+    txt_radius=50,
+    txt_weight=0,                  txt_size=15.0,
+    txt_fg_colour=0xD7EFD7,        txt_fg_alpha=0.9,
     graduation_radius=0,
     graduation_thickness=0,        graduation_mark_thickness=0,
     graduation_unit_angle=0,
@@ -79,19 +81,19 @@ gauge = {
     graph_thickness=5,
     graph_start_angle=180,
     graph_unit_angle=2.7,          graph_unit_thickness=2.7,
-    graph_bg_colour=0xffffff,      graph_bg_alpha=0.5,
+    graph_bg_colour=0xffffff,      graph_bg_alpha=0.3,
     graph_fg_colour=0xFFFFFF,      graph_fg_alpha=0.9,
     hand_fg_colour=0xEF5A29,       hand_fg_alpha=0.4,
     txt_radius=20,
     txt_weight=0,                  txt_size=11.0,
     txt_fg_colour=0xFFFFFF,        txt_fg_alpha=1.0,
-    graduation_radius=38,
-    graduation_thickness=0,        graduation_mark_thickness=1,
+    graduation_radius=25,
+    graduation_thickness=8,        graduation_mark_thickness=2,
     graduation_unit_angle=27,
-    graduation_fg_colour=0xFFFFFF, graduation_fg_alpha=0.3,
+    graduation_fg_colour=0xFFFFFF, graduation_fg_alpha=0.5,
     caption='',
     caption_weight=1,              caption_size=8.0,
-    caption_fg_colour=0xFFFFFF,    caption_fg_alpha=0.3,
+    caption_fg_colour=0xFFFFFF,    caption_fg_alpha=0.4,
 },
 {
     name='memperc',                arg='',                      max_value=100,
@@ -103,19 +105,19 @@ gauge = {
     graph_bg_colour=0xffffff,      graph_bg_alpha=0.3,
     graph_fg_colour=0xFFFFFF,      graph_fg_alpha=0.7,
     hand_fg_colour=0xEF5A29,       hand_fg_alpha=0.4,
-    txt_radius=10,
+    txt_radius=20,
     txt_weight=0,                  txt_size=11.0,
-    txt_fg_colour=0xFFFFFF,        txt_fg_alpha=0.9,
+    txt_fg_colour=0xFFFFFF,        txt_fg_alpha=1.0,
     graduation_radius=23,
     graduation_thickness=8,        graduation_mark_thickness=2,
     graduation_unit_angle=27,
-    graduation_fg_colour=0xFFFFFF, graduation_fg_alpha=0.9,
+    graduation_fg_colour=0xFFFFFF, graduation_fg_alpha=0.5,
     caption='',
     caption_weight=1,              caption_size=8.0,
     caption_fg_colour=0xFFFFFF,    caption_fg_alpha=0.4,
 },
 {
-    name='fs_used_perc',           arg='/',                     max_value=100,
+    name='diskio',           arg='/dev/nvme0n1',                     max_value=100,
     x=385,                          y=490,
     graph_radius=34,
     graph_thickness=5,
@@ -124,37 +126,16 @@ gauge = {
     graph_bg_colour=0xffffff,      graph_bg_alpha=0.3,
     graph_fg_colour=0xFFFFFF,      graph_fg_alpha=0.7,
     hand_fg_colour=0xEF5A29,       hand_fg_alpha=0.4,
-    txt_radius=46,
+    txt_radius=20,
     txt_weight=0,                  txt_size=11.0,
-    txt_fg_colour=0xFFFFFF,        txt_fg_alpha=0.9,
-    graduation_radius=28,
-    graduation_thickness=0,        graduation_mark_thickness=1,
+    txt_fg_colour=0xFFFFFF,        txt_fg_alpha=1.0,
+    graduation_radius=23,
+    graduation_thickness=8,        graduation_mark_thickness=2,
     graduation_unit_angle=27,
-    graduation_fg_colour=0xFFFFFF, graduation_fg_alpha=0.3,
-    caption='/',
-    caption_weight=1,              caption_size=9.0,
-    caption_fg_colour=0xFFFFFF,    caption_fg_alpha=0.7,
-},
-{
-    name='fs_used_perc',           arg='/home',                max_value=100,
-    x=385,                          y=490,
-    graph_radius=28,
-    graph_thickness=5,
-    graph_start_angle=180,
-    graph_unit_angle=2.7,          graph_unit_thickness=2.7,
-    graph_bg_colour=0xffffff,      graph_bg_alpha=0.3,
-    graph_fg_colour=0xFFFFFF,      graph_fg_alpha=0.7,
-    hand_fg_colour=0xEF5A29,       hand_fg_alpha=0.4,
-    txt_radius=18,
-    txt_weight=0,                  txt_size=11.0,
-    txt_fg_colour=0xFFFFFF,        txt_fg_alpha=0.9,
-    graduation_radius=28,
-    graduation_thickness=0,        graduation_mark_thickness=1,
-    graduation_unit_angle=27,
-    graduation_fg_colour=0xFFFFFF, graduation_fg_alpha=0.3,
-    caption='/home',
-    caption_weight=1,              caption_size=9.0,
-    caption_fg_colour=0xFFFFFF,    caption_fg_alpha=0.7,
+    graduation_fg_colour=0xFFFFFF, graduation_fg_alpha=0.5,
+    caption='',
+    caption_weight=1,              caption_size=8.0,
+    caption_fg_colour=0xFFFFFF,    caption_fg_alpha=0.9,
 },
 }
 
@@ -352,7 +333,7 @@ function go_clock_rings(display)
 	load_clock_rings(display, clock_m[i])
     end
     for i in pairs(clock_s) do
-	load_clock_rings(display, clock_s[i])
+        load_clock_rings(display, clock_s[i])
     end
 end
 
@@ -366,11 +347,11 @@ function go_gauge_rings(display)
 	str = string.format('${%s %s}',data['name'], data['arg'])
 	str = conky_parse(str)
 	if string.match(str,"MiB") then
-	    str = string.sub(str, 0, string.len(str)-3) * 1024
-	elseif string.match(str,"GiB") then
-	    str = string.sub(str, 0, string.len(str)-3) * 1024 * 1024
-        elseif string.match(str, "KiB") or string.match(str, "B") then
 	    str = string.sub(str, 0, string.len(str)-3)
+	elseif string.match(str,"GiB") then
+	    str = string.sub(str, 0, string.len(str)-3) * 1024
+        elseif string.match(str, "KiB") or string.match(str, "B") then
+	    str = string.sub(str, 0, string.len(str)-3) / 1024
 	end
 	value = tonumber(str)
 	draw_gauge_ring(display, data, value)

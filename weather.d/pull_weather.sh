@@ -90,8 +90,9 @@ init_where_am_I(){
 	encountry=$(echo ${en_where_am_i} | jq .country | tr "[A-Z]" "[a-z]" | tr -d \")
 	countryCode=$(echo ${zh_where_am_i} | jq .countryCode | tr -d \")
 	regionName=$(echo ${zh_where_am_i} | jq .regionName | tr -d \")
-	regionName=${regionName:0:2}
-	city=$(echo ${zh_where_am_i} | jq .city | tr -d \")
+	regionName=$(echo ${regionName} | sed "s/\(.*\)自治区/\1/g")
+	regionName=$(echo ${regionName} | sed "s/\(.*\)市/\1/g")
+	city=$(echo ${zh_where_am_i} | jq .city | tr -d \" | sed "s/\(.*\)市/\1/g")
 }
 
 get_query_code(){
@@ -175,8 +176,7 @@ main(){
 	if [ "${update}" == true ]
 	then
 		init_where_am_I
-		query_weather > /tmp/query_weather.log
-		cat /tmp/query_weather.log > ${weatherlog}
+		query_weather > ${weatherlog}
 	elif [ -n "${imgpath}" ]
 	then
 		[ type != ${weathertype} ] && showhelp

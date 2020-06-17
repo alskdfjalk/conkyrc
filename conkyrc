@@ -81,7 +81,7 @@ PM  2.5： ${execi 60 /bin/bash ~/.conky/weather.d/pull_weather.sh -t pm25 -d 2 
 ${font WenQuanYi Micro Hei Mono:bold:size=12}${color5}${execi 60 /bin/bash ~/.conky/weather.d/pull_weather.sh -t notice }
 
 ${voffset -270}${color1}
-${goto 465}${font ubuntu:bold:size=13}${time %A}
+${goto 455}${font ubuntu:bold:size=13}${time %A}
 ${goto 475}${font ubuntu:bold:size=13}${time %b}/${time %e}
 
 ${voffset -30}
@@ -100,7 +100,7 @@ ${goto 388}${font Ubuntu:normal:size=11}${color1}${top_mem name 1}${alignr}${top
 ${goto 388}${font Ubuntu:normal:size=11}${color2}${top_mem name 2}${alignr}${top_mem mem 2}%
 ${goto 388}${font Ubuntu:normal:size=11}${color3}${top_mem name 3}${alignr}${top_mem mem 3}%
 
-${goto 520}${voffset 10}${color1}${diskiograph 40,150 FFFFFF FF0000 102400 -t -l}
+${goto 520}${voffset 10}${color1}${diskiograph 40,150 FFFFFF FF0000 1024000000 -t -l}
 ${voffset -50}
 ${goto 388}${font Ubuntu:bold:size=15}${color}DISKS${color3}${font Ubuntu:bold:size=9}/MiB
 ${voffset -15}

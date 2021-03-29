@@ -6,26 +6,30 @@
 # Description:
 # Usage:
 # Notes:
-# {
-#   "status": "success",
-#   "country": "China",
-#   "countryCode": "CN",
-#   "region": "BJ",
-#   "regionName": "Beijing",
-#   "city": "Beijing",
-#   "zip": "",
-#   "lat": 39.9288,
-#   "lon": 116.3889,
-#   "timezone": "Asia/Shanghai",
-#   "isp": "China Unicom Beijing Province Network",
-#   "org": "",
-#   "as": "AS4808 China Unicom Beijing Province Network",
-#   "query": "222.128.117.89"
 # }
 
 #  -------------------------------------------------------------------------
 
 weatherlog=/tmp/weather.log
+
+weather_type_data_list=(
+	air_tips
+	humidity
+	air_level
+	air_tips
+	tem
+	tem1
+	tem2
+	win
+	win_speed
+	wea
+	date
+	day
+)
+weather_type_top_list=(
+	update_time
+	city
+)
 
 showhelp()
 {
@@ -38,8 +42,7 @@ showhelp()
 	echo "                      -x             图片显示的位置：x"
 	echo "                      -y             图片显示的位置：y"
 	echo "                      -t             选择要获取的天气数据"
-	echo "                      city|province|update_time|shidu|pm25|pm10|quality|wendu|ganmao|low|high|sunrise|sunset|fx|fl|type|ymd"
-	echo "example:"
+	echo "                      ${weather_type_data_list[@]} ${weather_type_top_list[@]}"
 	exit
 }
 
@@ -113,77 +116,52 @@ get_query_code(){
 }
 
 query_weather(){
-	get_query_code
-	base_url='http://t.weather.sojson.com/api/weather/city'
-	this_city_weather_query_url=${base_url}"/${prov_code}${station_code}${city_code}"
-	curl -s ${this_city_weather_query_url}
+	# get_query_code
+	# base_url='http://t.weather.sojson.com/api/weather/city'
+	# request_url='https://tianqiapi.com/api?version=v1&appid=87783233&appsecret=XrG3R4bW&city=${1}'
+	request_url='https://tianqiapi.com/api?version=v1&appid=87783233&appsecret=XrG3R4bW'
+	# this_city_weather_query_url=${base_url}"/${prov_code}${station_code}${city_code}"
+	echo -en $(curl -s ${request_url})
 }
 
 weather_format_variables(){
-	weather_data="$(cat ${weatherlog})"
 	which_day=${which_day:=0}
 	[ -n "$1" ] && weathertype=${1}
-	if [ "update_time" == "${weathertype}" ]
-	then
-		weathertype="updateTime"
-	elif [ "province" == ${weathertype} ]
-	then
-		weathertype=parent
-	fi
 
-	case ${weathertype} in
-		ganmao|wendu|shidu|pm25|pm10|quality)
-			echo ${weather_data} | jq ".data.${weathertype}"
-			;;
-		updateTime|city|parent)
-			echo ${weather_data} | jq ".cityInfo.${weathertype}"
-			;;
-		yesterday)
-			echo ${weather_data} | jq ".data.${weathertype}"
-			;;
-		sunrise|sunset|fx|fl|notice|type|ymd)
-			echo ${weather_data} | jq ".data.forecast[${which_day}].${weathertype}"
-			;;
-		low|high)
-			result=$(echo ${weather_data} | jq ".data.forecast[${which_day}].${weathertype}")
-			echo ${result} | grep -o '[0-9]*'
-			;;
-		*)
-			echo "天气类型指定错误"
-			exit 2
-	esac
+	for wt in ${weather_type_top_list[@]}
+	do
+		[ ${wt} == ${weathertype} ] && cat ${weatherlog} | jq .${weathertype} && return 0
+	done
+	cat ${weatherlog} | jq .data[${which_day}].${weathertype} | tr -d \" | awk -F"转" '{print $1}'
 }
 
-
 query_img_for_conky(){
-	sunset=$(weather_format_variables sunset | tr -d \")
-	nowHours=$(date "+%H")
-	nowMinutes=$(date "+%m")
-	sunsetHours=$(echo ${sunset} | awk -F":" '{print $1}')
-	sunsetMinutes=$(echo ${sunset} | awk -F":" '{print $2}')
-	dn=d
-	if [ ${nowHours} -ge ${sunsetHours} ]
+	nowHours=$(date -d $(date "+%H") +%s)
+	dark_time=$(date -d "18" +%s)
+	if [ "${nowHours}" -ge ${dark_time} ]
 	then
-		[ ${nowHours} -gt ${sunsetHours} -o ${nowMinutes} -ge ${sunsetMinutes} ] && dn=n
+		dn=n
+	else
+		dn=d
 	fi
 	x=${x=:50}
 	y=${y=:50}
-	echo \$\{image ${imgpath}/${dn}$(weather_format_variables type| tr -d \").gif -p ${x},${y} \}
+	echo \$\{image ${imgpath}/${dn}$(weather_format_variables wea).gif -p ${x},${y} \}
 }
 
 main(){
 	init_args $*
 	if [ "${update}" == true ]
 	then
-		init_where_am_I
-		query_weather > ${weatherlog}
+		# init_where_am_I
+		query_weather ; echo
 	elif [ -n "${imgpath}" ]
 	then
-		[ type != ${weathertype} ] && showhelp
+		[ imgs != ${weathertype} ] && showhelp
 		query_img_for_conky
 	elif [ -n "${weathertype}" ]
 	then
-		echo $(weather_format_variables) | tr -d \"
+		echo $(weather_format_variables) | tr -d \" | tr -d "℃" 
 	fi
 }
 

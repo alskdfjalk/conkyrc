@@ -10,7 +10,7 @@
 
 #  -------------------------------------------------------------------------
 
-weatherlog=/tmp/weather.log
+weatherlog=/home/cj/tmp/weather.log
 
 weather_type_data_list=(
 	air_tips

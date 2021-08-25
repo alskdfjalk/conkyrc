@@ -1,10 +1,4 @@
 --==============================================================================
---                                 conky_grey.lua
---
---  author  : SLK
---  version : v2011062101
---  license : Distributed under the terms of GNU GPL version 2 or later
---
 --==============================================================================
 
 require 'cairo'
@@ -22,7 +16,7 @@ clock_h = {
     graph_bg_colour=0xffffff,      graph_bg_alpha=0.0,
     graph_fg_colour=0x40BF46,      graph_fg_alpha=1.0,
     txt_radius=48,
-    txt_weight=1,                  txt_size=12.0,
+    txt_weight=1,                  txt_size=19.0,
     txt_fg_colour=0x040BF46,        txt_fg_alpha=1.0,
     graduation_radius=63,
     graduation_thickness=6,        graduation_mark_thickness=2,
@@ -41,7 +35,7 @@ clock_m = {
     graph_bg_colour=0xffffff,      graph_bg_alpha=0.3,
     graph_fg_colour=0x97F1BD,      graph_fg_alpha=0.5,
     txt_radius=48,
-    txt_weight=0,                  txt_size=14.0,
+    txt_weight=0,                  txt_size=17,
     txt_fg_colour=0x97F1BD,        txt_fg_alpha=1.0,
     graduation_radius=57,
     graduation_thickness=0,        graduation_mark_thickness=2,
@@ -62,7 +56,7 @@ clock_s = {
     graph_bg_colour=0xffffff,      graph_bg_alpha=0.4,
     graph_fg_colour=0x19EFDF,      graph_fg_alpha=1.0,
     txt_radius=50,
-    txt_weight=1,                  txt_size=17.0,
+    txt_weight=1,                  txt_size=15.0,
     txt_fg_colour=0x19EFDF,        txt_fg_alpha=1.0,
     graduation_radius=0,
     graduation_thickness=0,        graduation_mark_thickness=0,
@@ -117,7 +111,7 @@ gauge = {
     caption_fg_colour=0xFFFFFF,    caption_fg_alpha=0.4,
 },
 {
-    name='diskio',           arg='/dev/sda',                     max_value=100,
+    name='diskio',           arg='/dev/nvme0n1',                     max_value=100,
     x=385,                          y=490,
     graph_radius=34,
     graph_thickness=5,
